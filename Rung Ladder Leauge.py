@@ -81,6 +81,9 @@ async def challenge(ctx, Team1: discord.Role, Team2: discord.Role):
             await ctx.message.channel.send("You can only challenge teams at a higher rank than you..")
     else:
         await ctx.message.channel.send("You are not on that Team or you did the format wrong..")
+    
+    records[str(challenger)][2] = 1
+    records[str(defender)][2] = 1
 
 @client.command(pass_context=True)
 async def results(ctx, Team1: discord.Role, score1: int, Team2: discord.Role, score2: int):
@@ -134,4 +137,4 @@ async def removeteam(ctx, TeamName: discord.Role):
         await ctx.send("You are not the captain of this team..")
 
 
-client.run('NzMyMzcyMTcwMzY5NTMxOTc4.XwzovA.X3lQBE67E4X9xdmf2ennYkVsFLA') #input your discord token here.  Keep the quotations
+client.run('TOKEN') #input your discord token here.  Keep the quotations
