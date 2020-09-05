@@ -3,14 +3,14 @@ from discord.ext import commands
 from discord.utils import get
 import asyncio
 import json
-import datetime
+from datetime import date
 
 client = commands.Bot(command_prefix = "!")
 bMsg = ' '
 
 
-teamRosters = {'TnS' : [('joe', 'steamid:0:0:1'), ('jane', 'STEAMID::0:0:2')],
-               'auto!': [('bert', 'steamid:0:0:4'), ('ernie', 'STEAMID::0:0:3')]}
+teamRosters = {'TnS' : {'joe': [('steamid:0:0:1', 'Captain', '05/07/2020')], 'jane': [('STEAMID::0:0:2', 'Player', '05/07/2020')]},
+               'auto!': {'bert': [('steamid:0:0:4', 'Captain', '05/07/2020')], 'ernie': [('STEAMID::0:0:3', 'Player', '05/07/2020')]}}
 upcomingMatchs = {}
 records = {'TnS': [0, 0, '🟢'],
              'auto!': [0, 0, '🟢'],
@@ -18,7 +18,6 @@ records = {'TnS': [0, 0, '🟢'],
              'cc:': [0, 0, '🟢'],
              'Sn#': [0, 0, '🟢'],} # W, L, Status (0 for open (green light), 1 for pending and scheduled (red light), 2 for suspended (yellow light).), placement on standings
 teams = list(records)
-standings = []
 
 @client.command(pass_context=True)
 async def updatestandings(ctx):
@@ -66,10 +65,13 @@ async def reinstate(ctx, Team):
 
 @client.command(pass_context=True)
 async def createteam(ctx, TeamName, TeamCaptain, SteamID):
+    today = date.today()
     if(TeamName in teamRosters):
         await ctx.send("Sorry that team already exists..")
     else:
-        teamRosters[TeamName] = [(TeamCaptain, SteamID)]
+        teamRosters[TeamName] = {}
+        teamRosters[TeamName][TeamCaptain] = []
+        teamRosters[TeamName][TeamCaptain] = [(SteamID, 'Captain', str(today.strftime("%d/%m/%Y")))]
         records[TeamName] = [0, 0, '❌']
         print(teamRosters)
         await ctx.guild.create_role(name= TeamName, hoist=True)
@@ -87,39 +89,47 @@ async def createteam(ctx, TeamName, TeamCaptain, SteamID):
     await ctx.send("```" + bMsg + "```")
 
 @client.command(pass_context=True)
-async def playeradd(ctx, TeamName, player, SteamID):
+async def playeradd(ctx, TeamName, player, SteamID, role):
+    today = date.today()
     playerRostered = 0
-    if(TeamName not in teamRosters):
+    rTeams = list(teamRosters)
+    print(teamRosters)
+    if(TeamName not in rTeams):
         await ctx.send("No such team exists..")
     else:
-        for i in teamRosters:
-            for j in teamRosters[i]:
-                if(SteamID in j):
-                    playerRostered = 1
-        
-        if(playerRostered == 0):
-            playerID = (player, SteamID)
-            teamRosters[TeamName].append(playerID)
-            print(teamRosters)
-            playerAdd = discord.utils.get(ctx.message.guild.roles, name=TeamName)
-            await ctx.message.author.add_roles(playerAdd)
-            await ctx.send(player + " ( " + SteamID + " ) has been successfully added to " + TeamName)
-        else:
-            await ctx.send("Player is already assigned to a team..")
+        if (role == 'Captain' or role == 'Player'):
+            #trying to get this working with the nested dictionary to where it will exclude any attempt at adding a duplicate SteamID (adminable, not crucial.)  This works with the non-nested dictionary
+            for i in teamRosters:
+                for j in teamRosters[i]:
+                    if(SteamID in j):
+                        playerRostered = 1
+            
+            if(playerRostered == 0):
+                playerID = (SteamID, role, str(today.strftime("%d/%m/%Y")))
+                teamRosters[TeamName][player] = []
+                teamRosters[TeamName][player].append(playerID)
+                print(teamRosters)
+                playerAdd = discord.utils.get(ctx.message.guild.roles, name=TeamName)
+                await ctx.message.author.add_roles(playerAdd)
+                await ctx.send(player + " ( " + SteamID + " ) has been successfully added to " + TeamName)
+            else:
+                await ctx.send("Player is already assigned to a team..")
 
-        print(len(teamRosters[TeamName]))
-        if (len(teamRosters[TeamName]) == 4):
-            await ctx.send(str(TeamName) + " now have enough players on their team to challenge another team..")
-            records[TeamName][2] = '🟢'
+            print(len(teamRosters[TeamName]))
+            if (len(teamRosters[TeamName]) == 4):
+                await ctx.send(str(TeamName) + " now have enough players on their team to challenge another team..")
+                records[TeamName][2] = '🟢'
+        else:
+            await ctx.send("You have given this player an invalid Role")
 
 @client.command(pass_context=True)
-async def playerremove(ctx, TeamName, player, SteamID):
+async def playerremove(ctx, TeamName, player):
     print(teamRosters)
-    player = (player, SteamID)
+    #player = (player, SteamID, role, dateAdded)
     if(TeamName in teamRosters):
         if(player in teamRosters[TeamName]):
             await ctx.send("Player " + player[0] + " ( " + player[1] + " ) has been successfully removed from " + TeamName)
-            teamRosters[TeamName].remove(player)
+            del teamRosters[TeamName][player]
             print(teamRosters)
             
         else:
@@ -217,6 +227,19 @@ async def removeteam(ctx, TeamName: discord.Role):
         await TeamName.delete()
     else:
         await ctx.send("You are not the captain of this team..")
+
+@client.command(pass_context=True)
+async def roster(ctx, TeamName):
+    #rosters = list(teamRosters)
+    bMsgList =  ['PlayerName     |           STEAMID          |     ROLE   | DATE ADDED |\n', '---------------╪----------------------------╪------------╪------------╪\n']
+
+    for i in teamRosters[TeamName]:
+        for j in range(len(teamRosters[TeamName][i])):
+            print(teamRosters[TeamName][i][j][0], teamRosters[TeamName][i][j][1], teamRosters[TeamName][i][j][2])
+            bMsgList.append(i + " " * (15 - len(i)) + '│ ' + str(teamRosters[TeamName][i][j][0]) + " " * (27 - len(str(teamRosters[TeamName][i][j][0]))) + "│ " + str(teamRosters[TeamName][i][j][1]) + " " * (11 - len(str(teamRosters[TeamName][i][j][1]))) + "│ "  + str(teamRosters[TeamName][i][j][2]) + " " * (11 - len(str(teamRosters[TeamName][i][j][2]))) + "│\n")
+    
+    bMsg = ''.join(bMsgList)
+    await ctx.send("```" + bMsg + "```")
 
 
 client.run('NzMyMzcyMTcwMzY5NTMxOTc4.XwzovA.ngNtyusstc8Oz_xV2pM1BH_JZ70') #input your discord token here.  Keep the quotations
