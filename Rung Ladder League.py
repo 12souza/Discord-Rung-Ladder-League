@@ -6,19 +6,60 @@ import json
 import datetime
 
 client = commands.Bot(command_prefix = "!")
+bMsg = ' '
 
 
-teams = ['auto!', 'TnS,', 'St4ck', 'hello!?']
 teamRosters = {'TnS' : [('joe', 'steamid:0:0:1'), ('jane', 'STEAMID::0:0:2')],
                'auto!': [('bert', 'steamid:0:0:4'), ('ernie', 'STEAMID::0:0:3')]}
 upcomingMatchs = {}
-records = {'TnS': [0, 0, 0, 2],
-             'auto!': [0, 0, 0, 4],
-             'St4Ck': [0, 0, 0, 1],
-             'cc:': [0, 0, 0, 3],
-             'Sn#': [0, 0, 0, 5],} # W, L, Status (0 for open (green light), 1 for pending and scheduled (red light), 2 for suspended (yellow light).), placement on standings
+records = {'TnS': [0, 0, '🟢'],
+             'auto!': [0, 0, '🟢'],
+             'St4ck': [0, 0, '🟢'],
+             'cc:': [0, 0, '🟢'],
+             'Sn#': [0, 0, '🟢'],} # W, L, Status (0 for open (green light), 1 for pending and scheduled (red light), 2 for suspended (yellow light).), placement on standings
+teams = list(records)
 standings = []
 
+@client.command(pass_context=True)
+async def updatestandings(ctx):
+    bMsgList =  [' Rank  │     Team Name              W              L         Status  \n', '-------╪---------------------╪-------------╪-------------╪-----------\n']
+    bEnumList = list(enumerate(teams, start = 1))
+
+    for i in range(len(bEnumList)):
+        #print(i)
+        bMsgList.append("  " + str(bEnumList[i][0]) + " " * (3 - len(str(bEnumList[i][0]))) + "  │        " + bEnumList[i][1] + (" " * (13 - len(bEnumList[i][1]))) + "│      " + str(records[bEnumList[i][1]][0]) + (" " * (7 - len(str(records[bEnumList[i][1]][0]))))  + "│       " + str(records[bEnumList[i][1]][1]) + (" " * (6 - len(str(records[bEnumList[i][1]][1])))) + "│    " + records[bEnumList[i][1]][2] + "\n")
+        bMsg = ''.join(bMsgList)
+
+    await ctx.send("```" + bMsg + "```")
+
+@client.command(pass_context=True)
+async def suspend(ctx, Team):
+    records[str(Team)][2] = '🟡'
+
+    bMsgList =  [' Rank  │     Team Name              W              L         Status  \n', '-------╪---------------------╪-------------╪-------------╪-----------\n']
+    bEnumList = list(enumerate(teams, start = 1))
+
+    for i in range(len(bEnumList)):
+        #print(i)
+        bMsgList.append("  " + str(bEnumList[i][0]) + " " * (3 - len(str(bEnumList[i][0]))) + "  │        " + bEnumList[i][1] + (" " * (13 - len(bEnumList[i][1]))) + "│      " + str(records[bEnumList[i][1]][0]) + (" " * (7 - len(str(records[bEnumList[i][1]][0]))))  + "│       " + str(records[bEnumList[i][1]][1]) + (" " * (6 - len(str(records[bEnumList[i][1]][1])))) + "│    " + records[bEnumList[i][1]][2] + "\n")
+        bMsg = ''.join(bMsgList)
+    await ctx.send("```" + bMsg + "```")
+
+@client.command(pass_context=True)
+async def reinstate(ctx, Team):
+    if(records[str(Team)][2] == '🟡'):
+        records[str(Team)][2] = '🟢'
+
+        bMsgList =  [' Rank  │     Team Name              W              L         Status  \n', '-------╪---------------------╪-------------╪-------------╪-----------\n']
+        bEnumList = list(enumerate(teams, start = 1))
+
+        for i in range(len(bEnumList)):
+            #print(i)
+            bMsgList.append("  " + str(bEnumList[i][0]) + " " * (3 - len(str(bEnumList[i][0]))) + "  │        " + bEnumList[i][1] + (" " * (13 - len(bEnumList[i][1]))) + "│      " + str(records[bEnumList[i][1]][0]) + (" " * (7 - len(str(records[bEnumList[i][1]][0]))))  + "│       " + str(records[bEnumList[i][1]][1]) + (" " * (6 - len(str(records[bEnumList[i][1]][1])))) + "│    " + records[bEnumList[i][1]][2] + "\n")
+            bMsg = ''.join(bMsgList)
+        await ctx.send("```" + bMsg + "```")
+    else:
+        await ctx.send("This team was never suspended...")
 
 @client.command(pass_context=True)
 async def createteam(ctx, TeamName, TeamCaptain, SteamID):
@@ -82,13 +123,29 @@ async def challenge(ctx, Team1: discord.Role, Team2: discord.Role):
     else:
         await ctx.message.channel.send("You are not on that Team or you did the format wrong..")
     
-    records[str(challenger)][2] = 1
-    records[str(defender)][2] = 1
+    records[str(challenger)][2] = '🔴'
+    records[str(defender)][2] = '🔴'
+
+    bMsgList =  [' Rank  │     Team Name              W              L         Status  \n', '-------╪---------------------╪-------------╪-------------╪-----------\n']
+    bEnumList = list(enumerate(teams, start = 1))
+
+    for i in range(len(bEnumList)):
+        #print(i)
+        bMsgList.append("  " + str(bEnumList[i][0]) + " " * (3 - len(str(bEnumList[i][0]))) + "  │        " + bEnumList[i][1] + (" " * (13 - len(bEnumList[i][1]))) + "│      " + str(records[bEnumList[i][1]][0]) + (" " * (7 - len(str(records[bEnumList[i][1]][0]))))  + "│       " + str(records[bEnumList[i][1]][1]) + (" " * (6 - len(str(records[bEnumList[i][1]][1])))) + "│    " + records[bEnumList[i][1]][2] + "\n")
+        bMsg = ''.join(bMsgList)
+    await ctx.send("```" + bMsg + "```")
 
 @client.command(pass_context=True)
 async def results(ctx, Team1: discord.Role, score1: int, Team2: discord.Role, score2: int):
+    global bMsg
     champion = len(ctx.guild.roles) - 3
+    '''winnerIndex = teams.index(winner)
+    loserIndex = teams.index(loser)
 
+    if (winnerIndex > loserIndex):
+        newRank = teams.pop(winnerIndex)
+        teams.insert(loserIndex, newRank)'''
+        
     if (score1 > score2):
         winner = Team1
         loser = Team2
@@ -100,6 +157,12 @@ async def results(ctx, Team1: discord.Role, score1: int, Team2: discord.Role, sc
 
     if(int(winner.position) < int(loser.position)):
         await winner.edit(position=int(loser.position))
+    winnerIndex = teams.index(str(winner))
+    loserIndex = teams.index(str(loser))
+
+    if (winnerIndex > loserIndex):
+        newRank = teams.pop(winnerIndex)
+        teams.insert(loserIndex, newRank)
 
     if(winner.position == champion):
         await ctx.message.channel.send(str(winner) + " are the current **CHAMPIONS**")
@@ -107,25 +170,18 @@ async def results(ctx, Team1: discord.Role, score1: int, Team2: discord.Role, sc
     records[str(winner)][0] += 1 #add one to the wins column
     records[str(loser)][1] += 1 #add one to the loss column
 
-    records[str(loser)][2] = 0
-    records[str(winner)][2] = 0
+    records[str(loser)][2] = '🟢'
+    records[str(winner)][2] = '🟢'
 
-'''Just using this as a test so i dont have to pass a lot of parameters.. want to build this into results, and decline commands.  Just to update standings
-Trying to take all of the dictionary keys to a list.. then iterate through the list and get them to access discord.Role to get the discord role position in the server...
-then finally iterate back through the records dictionary and update their placement on the server equal with the placement on the standings.  Biggest problem is the server role position
-counts the bottom position as 0 and the top position as the highest number of roles - (the amount of non-team admin roles).  So the final number for assignment is going to have to be 
-the abs(len(allRoles) - number of non-team roles).. i.position is not returning an integer where was winner.position and loser.position in !results does'''
+    #updatingStandings()
+    bMsgList =  [' Rank  │     Team Name              W              L         Status  \n', '-------╪---------------------╪-------------╪-------------╪-----------\n']
+    bEnumList = list(enumerate(teams, start = 1))
 
-@client.command(pass_context=True)
-async def test(ctx):
-    key_list = list(records)
-    print(key_list)
-
-    for i in key_list:
-        print(i)
-        i = discord.Role
-        print(i.position)
-
+    for i in range(len(bEnumList)):
+        #print(i)
+        bMsgList.append("  " + str(bEnumList[i][0]) + " " * (3 - len(str(bEnumList[i][0]))) + "  │        " + bEnumList[i][1] + (" " * (13 - len(bEnumList[i][1]))) + "│      " + str(records[bEnumList[i][1]][0]) + (" " * (7 - len(str(records[bEnumList[i][1]][0]))))  + "│       " + str(records[bEnumList[i][1]][1]) + (" " * (6 - len(str(records[bEnumList[i][1]][1])))) + "│    " + records[bEnumList[i][1]][2] + "\n")
+        bMsg = ''.join(bMsgList)
+    await ctx.send("```" + bMsg + "```")
 
 @client.command(pass_context=True)
 async def removeteam(ctx, TeamName: discord.Role):
@@ -137,4 +193,4 @@ async def removeteam(ctx, TeamName: discord.Role):
         await ctx.send("You are not the captain of this team..")
 
 
-client.run('TOKEN') #input your discord token here.  Keep the quotations
+client.run('NzMyMzcyMTcwMzY5NTMxOTc4.XwzovA.ngNtyusstc8Oz_xV2pM1BH_JZ70') #input your discord token here.  Keep the quotations
