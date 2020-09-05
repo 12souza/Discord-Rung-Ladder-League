@@ -23,12 +23,12 @@ standings = []
 @client.command(pass_context=True)
 async def updatestandings(ctx):
     teams = list(records)
-    bMsgList =  [' Rank  │     Team Name              W              L         Status  \n', '-------╪---------------------╪-------------╪-------------╪-----------\n']
+    bMsgList =  ['Rank│ Team Name    W     L   Status  \n', '----╪-----------╪-----╪-----╪----\n']
     bEnumList = list(enumerate(teams, start = 1))
 
     for i in range(len(bEnumList)):
         #print(i)
-        bMsgList.append("  " + str(bEnumList[i][0]) + " " * (3 - len(str(bEnumList[i][0]))) + "  │        " + bEnumList[i][1] + (" " * (13 - len(bEnumList[i][1]))) + "│      " + str(records[bEnumList[i][1]][0]) + (" " * (7 - len(str(records[bEnumList[i][1]][0]))))  + "│       " + str(records[bEnumList[i][1]][1]) + (" " * (6 - len(str(records[bEnumList[i][1]][1])))) + "│    " + records[bEnumList[i][1]][2] + "\n")
+        bMsgList.append(" " + str(bEnumList[i][0]) + " " * (1 - len(str(bEnumList[i][0]))) + "  │ " + bEnumList[i][1] + (" " * (10 - len(bEnumList[i][1]))) + "│  " + str(records[bEnumList[i][1]][0]) + (" " * (3 - len(str(records[bEnumList[i][1]][0]))))  + "│  " + str(records[bEnumList[i][1]][1]) + (" " * (3 - len(str(records[bEnumList[i][1]][1])))) + "│ " + records[bEnumList[i][1]][2] + "\n")
         bMsg = ''.join(bMsgList)
 
     await ctx.send("```" + bMsg + "```")
