@@ -182,7 +182,7 @@ async def challenge(ctx, Team1: discord.Role, Team2: discord.Role, map1):
                 #teams = list(records)
                 bMsgList =  ['Rank│ Team Name    W     L   Status  \n', '----╪-----------╪-----╪-----╪----\n']
                 bEnumList = list(enumerate(teams, start = 1))
-
+                tiebreaker = random.choice(mapList)
                 for i in range(len(bEnumList)):
                     #print(i)
                     bMsgList.append(" " + str(bEnumList[i][0]) + " " * (1 - len(str(bEnumList[i][0]))) + "  │ " + bEnumList[i][1] + (" " * (10 - len(bEnumList[i][1]))) + "│  " + str(records[bEnumList[i][1]][0]) + (" " * (3 - len(str(records[bEnumList[i][1]][0]))))  + "│  " + str(records[bEnumList[i][1]][1]) + (" " * (3 - len(str(records[bEnumList[i][1]][1])))) + "│ " + records[bEnumList[i][1]][2] + "\n")
@@ -195,9 +195,37 @@ async def challenge(ctx, Team1: discord.Role, Team2: discord.Role, map1):
                 await msg.edit(content="```" + bMsg + "```")
 
                 match = str(Team1) + " vs " + str(Team2)
-                tiebreaker = random.choice(mapList)
-                upcomingMatches[match] = [0, map1, None, tiebreaker, str(Team1), str(Team2)]
-                print(upcomingMatches)
+                upcomingMatches[match] = [0, map1, 'TBA', tiebreaker, str(Team1), str(Team2), 'TBA', 'TBA']
+                
+                uMsgList =  ['Defender │ Challenger │      Round 1 Map       │      Round 2 Map       │     Tiebreaker Map     │     Date    │     Time    │     Status   │\n---------╪------------╪------------------------╪------------------------╪------------------------╪-------------╪-------------╪--------------╪\n ']
+                for i in upcomingMatches:
+                    #print(upcomingMatches[i])
+                    if(upcomingMatches[i][0] == 0):
+                        uMsgList.append(" " + upcomingMatches[i][5] + " " * (7 - len(str(upcomingMatches[i][5]))) + "│ "
+                                        + upcomingMatches[i][4] + " " * (11 - len(str(upcomingMatches[i][4]))) + "│ "
+                                        + upcomingMatches[i][1] + " " * (23 - len(str(upcomingMatches[i][1]))) + "│ "
+                                        + upcomingMatches[i][2] + " " * (23 - len(str(upcomingMatches[i][2]))) + "│ "
+                                        + upcomingMatches[i][3] + " " * (23 - len(str(upcomingMatches[i][3]))) + "│ "
+                                        + upcomingMatches[i][6] + " " * (12 - len(str(upcomingMatches[i][6]))) + "│ "
+                                        + upcomingMatches[i][7] + " " * (12 - len(str(upcomingMatches[i][7]))) + "│ "
+                                        + "Pending" + " " * (13 - len("Pending")) + "│ \n")
+                    else:
+                        uMsgList.append(" " + upcomingMatches[i][5] + " " * (7 - len(str(upcomingMatches[i][5]))) + "│ "
+                                        + upcomingMatches[i][4] + " " * (11 - len(str(upcomingMatches[i][4]))) + "│ "
+                                        + upcomingMatches[i][1] + " " * (23 - len(str(upcomingMatches[i][1]))) + "│ "
+                                        + upcomingMatches[i][2] + " " * (23 - len(str(upcomingMatches[i][2]))) + "│ "
+                                        + upcomingMatches[i][3] + " " * (23 - len(str(upcomingMatches[i][3]))) + "│ "
+                                        + upcomingMatches[i][6] + " " * (12 - len(str(upcomingMatches[i][6]))) + "│ "
+                                        + upcomingMatches[i][7] + " " * (12 - len(str(upcomingMatches[i][7]))) + "│ "
+                                        + "Scheduled" + " " * (13 - len("Scheduled")) + "│ \n")
+                    uMsg = ''.join(uMsgList)
+                
+                channel2 = client.get_channel(752215154430574742)
+                msg_id2 = 752246430906712104
+                
+                msg = await channel2.fetch_message(msg_id2)
+                await msg.edit(content= "```" + uMsg + "```")
+
             await ctx.message.channel.send(str(challenger) + " has challenged " + str(defender) + " to a match!  The maps will be " + map1 + ", a map of " + str(Team2) + "'s choosing if they accept, and " + tiebreaker + " for the tiebreaker")
         else:
             await ctx.message.channel.send("You can only challenge teams at a higher rank than you..")
@@ -288,15 +316,17 @@ async def removeteam(ctx, TeamName: discord.Role):
 @client.command(pass_context=True)
 async def roster(ctx, TeamName):
     #rosters = list(teamRosters)
-    bMsgList =  ['PlayerName     |           STEAMID          |     ROLE   | DATE ADDED |\n', '---------------╪----------------------------╪------------╪------------╪\n']
+    bMsgList =  ['***Roster for ' + TeamName + '***\n\nPlayerName     |           STEAMID          |     ROLE   | DATE ADDED |\n', '---------------╪----------------------------╪------------╪------------╪\n']
+
+    channel = client.get_channel(752215115679662151)
 
     for i in teamRosters[TeamName]:
         for j in range(len(teamRosters[TeamName][i])):
             print(teamRosters[TeamName][i][j][0], teamRosters[TeamName][i][j][1], teamRosters[TeamName][i][j][2])
             bMsgList.append(i + " " * (15 - len(i)) + '│ ' + str(teamRosters[TeamName][i][j][0]) + " " * (27 - len(str(teamRosters[TeamName][i][j][0]))) + "│ " + str(teamRosters[TeamName][i][j][1]) + " " * (11 - len(str(teamRosters[TeamName][i][j][1]))) + "│ "  + str(teamRosters[TeamName][i][j][2]) + " " * (11 - len(str(teamRosters[TeamName][i][j][2]))) + "│\n")
-    
-    bMsg = ''.join(bMsgList)
-    await ctx.send("```" + bMsg + "```")
+            bMsg = ''.join(bMsgList)
+
+    await channel.send(content="```" + bMsg + "```")
 
 
 @client.command(pass_context=True)
