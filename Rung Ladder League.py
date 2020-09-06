@@ -20,6 +20,8 @@ records = {'TnS': [0, 0, '🟢'],
              'Sn#': [0, 0, '🟢'],} # W, L, Status (0 for open (green light), 1 for pending and scheduled (red light), 2 for suspended (yellow light).), placement on standings
 teams = list(records)
 
+
+
 @client.command(pass_context=True)
 async def updatestandings(ctx):
     teams = list(records)
@@ -30,8 +32,11 @@ async def updatestandings(ctx):
         #print(i)
         bMsgList.append(" " + str(bEnumList[i][0]) + " " * (1 - len(str(bEnumList[i][0]))) + "  │ " + bEnumList[i][1] + (" " * (10 - len(bEnumList[i][1]))) + "│  " + str(records[bEnumList[i][1]][0]) + (" " * (3 - len(str(records[bEnumList[i][1]][0]))))  + "│  " + str(records[bEnumList[i][1]][1]) + (" " * (3 - len(str(records[bEnumList[i][1]][1])))) + "│ " + records[bEnumList[i][1]][2] + "\n")
         bMsg = ''.join(bMsgList)
+    channel = client.get_channel(751542184968323223)
+    msg_id = 752065329185685605
 
-    await ctx.send("```" + bMsg + "```")
+    msg = await channel.fetch_message(msg_id)
+    await msg.edit(content="```" + bMsg + "```")
 
 @client.command(pass_context=True)
 async def suspend(ctx, Team):
@@ -46,7 +51,11 @@ async def suspend(ctx, Team):
         bMsgList.append(" " + str(bEnumList[i][0]) + " " * (1 - len(str(bEnumList[i][0]))) + "  │ " + bEnumList[i][1] + (" " * (10 - len(bEnumList[i][1]))) + "│  " + str(records[bEnumList[i][1]][0]) + (" " * (3 - len(str(records[bEnumList[i][1]][0]))))  + "│  " + str(records[bEnumList[i][1]][1]) + (" " * (3 - len(str(records[bEnumList[i][1]][1])))) + "│ " + records[bEnumList[i][1]][2] + "\n")
         bMsg = ''.join(bMsgList)
 
-    await ctx.send("```" + bMsg + "```")
+    channel = client.get_channel(751542184968323223)
+    msg_id = 752065329185685605
+
+    msg = await channel.fetch_message(msg_id)
+    await msg.edit(content="```" + bMsg + "```")
 
 @client.command(pass_context=True)
 async def reinstate(ctx, Team):
@@ -62,7 +71,11 @@ async def reinstate(ctx, Team):
             bMsgList.append(" " + str(bEnumList[i][0]) + " " * (1 - len(str(bEnumList[i][0]))) + "  │ " + bEnumList[i][1] + (" " * (10 - len(bEnumList[i][1]))) + "│  " + str(records[bEnumList[i][1]][0]) + (" " * (3 - len(str(records[bEnumList[i][1]][0]))))  + "│  " + str(records[bEnumList[i][1]][1]) + (" " * (3 - len(str(records[bEnumList[i][1]][1])))) + "│ " + records[bEnumList[i][1]][2] + "\n")
             bMsg = ''.join(bMsgList)
 
-        await ctx.send("```" + bMsg + "```")
+            channel = client.get_channel(751542184968323223)
+            msg_id = 752065329185685605
+
+            msg = await channel.fetch_message(msg_id)
+            await msg.edit(content="```" + bMsg + "```")
     else:
         await ctx.send("This team was never suspended...")
 
@@ -90,7 +103,11 @@ async def createteam(ctx, TeamName, TeamCaptain, SteamID):
         bMsgList.append(" " + str(bEnumList[i][0]) + " " * (1 - len(str(bEnumList[i][0]))) + "  │ " + bEnumList[i][1] + (" " * (10 - len(bEnumList[i][1]))) + "│  " + str(records[bEnumList[i][1]][0]) + (" " * (3 - len(str(records[bEnumList[i][1]][0]))))  + "│  " + str(records[bEnumList[i][1]][1]) + (" " * (3 - len(str(records[bEnumList[i][1]][1])))) + "│ " + records[bEnumList[i][1]][2] + "\n")
         bMsg = ''.join(bMsgList)
 
-    await ctx.send("```" + bMsg + "```")
+    channel = client.get_channel(751542184968323223)
+    msg_id = 752065329185685605
+
+    msg = await channel.fetch_message(msg_id)
+    await msg.edit(content="```" + bMsg + "```")
 
 @client.command(pass_context=True)
 async def playeradd(ctx, TeamName, player, SteamID, role):
@@ -171,7 +188,11 @@ async def challenge(ctx, Team1: discord.Role, Team2: discord.Role, map1):
                     bMsgList.append(" " + str(bEnumList[i][0]) + " " * (1 - len(str(bEnumList[i][0]))) + "  │ " + bEnumList[i][1] + (" " * (10 - len(bEnumList[i][1]))) + "│  " + str(records[bEnumList[i][1]][0]) + (" " * (3 - len(str(records[bEnumList[i][1]][0]))))  + "│  " + str(records[bEnumList[i][1]][1]) + (" " * (3 - len(str(records[bEnumList[i][1]][1])))) + "│ " + records[bEnumList[i][1]][2] + "\n")
                     bMsg = ''.join(bMsgList)
 
-                await ctx.send("```" + bMsg + "```")
+                channel = client.get_channel(751542184968323223)
+                msg_id = 752065329185685605
+
+                msg = await channel.fetch_message(msg_id)
+                await msg.edit(content="```" + bMsg + "```")
 
                 match = str(Team1) + " vs " + str(Team2)
                 tiebreaker = random.choice(mapList)
@@ -234,7 +255,11 @@ async def results(ctx, Team1: discord.Role, score1: int, Team2: discord.Role, sc
         bMsgList.append(" " + str(bEnumList[i][0]) + " " * (1 - len(str(bEnumList[i][0]))) + "  │ " + bEnumList[i][1] + (" " * (10 - len(bEnumList[i][1]))) + "│  " + str(records[bEnumList[i][1]][0]) + (" " * (3 - len(str(records[bEnumList[i][1]][0]))))  + "│  " + str(records[bEnumList[i][1]][1]) + (" " * (3 - len(str(records[bEnumList[i][1]][1])))) + "│ " + records[bEnumList[i][1]][2] + "\n")
         bMsg = ''.join(bMsgList)
 
-    await ctx.send("```" + bMsg + "```")
+    channel = client.get_channel(751542184968323223)
+    msg_id = 752065329185685605
+
+    msg = await channel.fetch_message(msg_id)
+    await msg.edit(content="```" + bMsg + "```")
 
 @client.command(pass_context=True)
 async def removeteam(ctx, TeamName: discord.Role):
@@ -244,6 +269,21 @@ async def removeteam(ctx, TeamName: discord.Role):
         await TeamName.delete()
     else:
         await ctx.send("You are not the captain of this team..")
+
+    teams = list(records)
+    bMsgList =  ['Rank│ Team Name    W     L   Status  \n', '----╪-----------╪-----╪-----╪----\n']
+    bEnumList = list(enumerate(teams, start = 1))
+
+    for i in range(len(bEnumList)):
+        #print(i)
+        bMsgList.append(" " + str(bEnumList[i][0]) + " " * (1 - len(str(bEnumList[i][0]))) + "  │ " + bEnumList[i][1] + (" " * (10 - len(bEnumList[i][1]))) + "│  " + str(records[bEnumList[i][1]][0]) + (" " * (3 - len(str(records[bEnumList[i][1]][0]))))  + "│  " + str(records[bEnumList[i][1]][1]) + (" " * (3 - len(str(records[bEnumList[i][1]][1])))) + "│ " + records[bEnumList[i][1]][2] + "\n")
+        bMsg = ''.join(bMsgList)
+
+    channel = client.get_channel(751542184968323223)
+    msg_id = 752065329185685605
+
+    msg = await channel.fetch_message(msg_id)
+    await msg.edit(content="```" + bMsg + "```")
 
 @client.command(pass_context=True)
 async def roster(ctx, TeamName):
@@ -258,5 +298,13 @@ async def roster(ctx, TeamName):
     bMsg = ''.join(bMsgList)
     await ctx.send("```" + bMsg + "```")
 
+
+@client.command(pass_context=True)
+async def test(ctx):
+    channel = client.get_channel(751542184968323223)
+    msg_id = 752065329185685605
+
+    msg = await channel.fetch_message(msg_id)
+    await msg.edit(content="Some content!")
 
 client.run('NzMyMzcyMTcwMzY5NTMxOTc4.XwzovA.ngNtyusstc8Oz_xV2pM1BH_JZ70') #input your discord token here.  Keep the quotations
