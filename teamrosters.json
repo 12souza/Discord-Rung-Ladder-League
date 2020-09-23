@@ -1,2 +1,183 @@
-{"TnS" : {"joe": ["steamid:0:0:1", "Captain", "05/07/2020"], "jane": ["STEAMID::0:0:2", "Player", "05/07/2020"]},
-               "auto!": {"bert": ["steamid:0:0:4", "Captain", "05/07/2020"], "ernie": ["STEAMID::0:0:3", "Player", "05/07/2020"]}}
+{
+    "TheElite": {
+        "gdhf_": [
+            "SteamID:0:0:158",
+            "Captain",
+            "14/09/2020",
+            379823536895819793
+        ],
+        "DOOM": [
+            "SteamID:0:1:12456",
+            "Player",
+            "09/14/2020"
+        ],
+        "KillMatt": [
+            "SteamID:0:1:222222",
+            "Player",
+            "09/14/2020"
+        ],
+        "Spiderhead": [
+            "SteamID:0:1:333333",
+            "Player",
+            "09/14/2020"
+        ],
+        "MILES": [
+            "SteamID:0:1:444444",
+            "Player",
+            "09/14/2020"
+        ],
+        "|2es": [
+            "SteamID:0:1:5555555",
+            "Player",
+            "09/14/2020"
+        ],
+        "iCE": [
+            "SteamID:0:1:777767",
+            "Player",
+            "09/14/2020"
+        ],
+        "Weakling": [
+            "SteamID:0:1:88888",
+            "Player",
+            "09/14/2020"
+        ],
+        "SteelValor": [
+            "SteamID:0:99999",
+            "Player",
+            "09/14/2020"
+        ]
+    },
+    "AFT": {
+        "Harro": [
+            "SteamID239852398",
+            "Captain",
+            "14/09/2020",
+            275821122451406848
+        ],
+        "DaDude3": [
+            "SteamID:34984233",
+            "Player",
+            "09/14/2020"
+        ],
+        "DaDude2": [
+            "SteamID:34984232",
+            "Player",
+            "09/14/2020"
+        ],
+        "DaDude": [
+            "SteamID:34dsf984232",
+            "Player",
+            "09/14/2020"
+        ]
+    },
+    "thx": {
+        "robby": [
+            "steamid:lol",
+            "Captain",
+            "14/09/2020",
+            308261407047024641
+        ],
+        "natters": [
+            "steamid:1",
+            "Player",
+            "09/14/2020"
+        ],
+        "tex": [
+            "steamid:2",
+            "Player",
+            "09/14/2020"
+        ],
+        "berg": [
+            "steamid:notpyroberglol",
+            "Player",
+            "09/14/2020"
+        ],
+        "cb": [
+            "steamid:nogun",
+            "Player",
+            "09/14/2020"
+        ]
+    },
+    "hi": {
+        "proonz": [
+            "00000",
+            "Captain",
+            "16/09/2020",
+            700549591413555242
+        ],
+        "pr00nz": [
+            "11111",
+            "Player",
+            "09/16/2020"
+        ],
+        "prawns": [
+            "22222",
+            "Player",
+            "09/16/2020"
+        ],
+        "proonzykins": [
+            "33333",
+            "Player",
+            "09/16/2020"
+        ]
+    },
+    "faketeam": {
+        "CoachSouz": [
+            "3294239",
+            "Captain",
+            "09/17/2020",
+            118900492607684614
+        ],
+        "someplayer": [
+            "324982398",
+            "Player",
+            "09/19/2020"
+        ],
+        "anotherplayer": [
+            "23409",
+            "Player",
+            "09/19/2020"
+        ],
+        "yetanotherplayer": [
+            "20394",
+            "Player",
+            "09/19/2020"
+        ]
+    },
+    "NewTeam": {
+        "frizz": [
+            "SteamID:0:0:5503312341",
+            "Captain",
+            "09/21/2020",
+            240956884465483777
+        ],
+        "myTeammate": [
+            "SteamID:0:1:55553333",
+            "Player",
+            "09/21/2020"
+        ],
+        "Toastie": [
+            "SteamID:0:1:55553333",
+            "Player",
+            "09/21/2020"
+        ],
+        "eS|-frizz": [
+            "SteamID:0:1:2345",
+            "Player",
+            "09/21/2020"
+        ]
+    },
+    "faketeamB": {
+        "CoachSouz2": [
+            "234873287423",
+            "Captain",
+            "09/23/2020",
+            756057336375672922
+        ],
+        "playerA": [
+            "23982938",
+            "Player",
+            "09/23/2020"
+        ]
+    }
+}
