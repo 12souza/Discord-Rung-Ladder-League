@@ -1663,4 +1663,4 @@ async def test(ctx, TeamName = None):
 #timertest.before_loop(client.wait_until_ready())    
 #timertest.start()
 client.loop.create_task(check_Expired_Challenges())
-client.run('NzMyMzcyMTcwMzY5NTMxOTc4.XwzovA.ngNtyusstc8Oz_xV2pM1BH_JZ70') #input your discord token here.  Keep the quotations
+client.run('TOKEN') #input your discord token here.  Keep the quotations
